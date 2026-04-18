@@ -31,7 +31,7 @@ export function activate(context: vscode.ExtensionContext): void {
   const cmd = vscode.commands.registerCommand('biTeamALInstructions.download', async () => {
     const root = findAlWorkspaceRoot();
     if (!root) {
-      vscode.window.showWarningMessage('AL Instructions Sync: No AL workspace detected.');
+      vscode.window.showWarningMessage('BIT Instructions Sync: No AL workspace detected.');
       return;
     }
     await downloadInstructionFiles(root);

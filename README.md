@@ -19,7 +19,7 @@ You can also trigger the download manually at any time via the Command Palette.
 ## Features
 
 - **Auto-sync on open** — downloads instruction files whenever an AL workspace is opened
-- **Manual command** — run `AL: Download Instruction Files` from the Command Palette (`Ctrl+Shift+P`)
+- **Manual command** — run `BIT: Download Instruction Files` from the Command Palette (`Ctrl+Shift+P`)
 - **Microsoft account auth** — uses the account you are already signed in with in VS Code, no PAT required
 - **Configurable** — control which Azure DevOps repo and which folders to download
 

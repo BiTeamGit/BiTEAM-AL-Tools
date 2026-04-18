@@ -16,7 +16,7 @@
     "commands": [
       {
         "command": "biTeamALInstructions.download",
-        "title": "AL: Download Instruction Files"
+        "title": "BIT: Download Instruction Files"
       }
     ],
     "configuration": {

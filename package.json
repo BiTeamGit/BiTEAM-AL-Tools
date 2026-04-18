@@ -1,0 +1,59 @@
+{
+  "name": "bi-team-al-instructions-sync",
+  "displayName": "BiTeam AL Instructions Sync",
+  "description": "Downloads AI instruction files from Azure DevOps into AL workspaces",
+  "version": "0.1.0",
+  "publisher": "biteam",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "workspaceContains:**/app.json"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "biTeamALInstructions.download",
+        "title": "AL: Download Instruction Files"
+      }
+    ],
+    "configuration": {
+      "title": "BiTeam AL Instructions Sync",
+      "properties": {
+        "biTeamALInstructions.orgUrl": {
+          "type": "string",
+          "default": "",
+          "description": "Azure DevOps organization URL (e.g. https://dev.azure.com/myorg)"
+        },
+        "biTeamALInstructions.project": {
+          "type": "string",
+          "default": "",
+          "description": "Azure DevOps project name"
+        },
+        "biTeamALInstructions.repository": {
+          "type": "string",
+          "default": "",
+          "description": "Azure DevOps repository name"
+        },
+        "biTeamALInstructions.folders": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [".claude", ".github"],
+          "description": "Folders to download from the repository root"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.0"
+  }
+}

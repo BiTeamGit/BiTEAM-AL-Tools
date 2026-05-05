@@ -1,5 +1,9 @@
 .vscode/**
 .vscode-test/**
+.vs/**
 src/**
 .gitignore
 tsconfig.json
+package-lock.json
+node_modules/**
+*.vsix

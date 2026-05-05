@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import { downloadInstructionFiles } from './downloader';
+import { updateBcVersion } from './bcVersionUpdater';
 
 function findAlWorkspaceRoot(): string | undefined {
   const folders = vscode.workspace.workspaceFolders;
@@ -28,7 +29,7 @@ function findAlWorkspaceRoot(): string | undefined {
 
 export function activate(context: vscode.ExtensionContext): void {
   // Manual command — accessible from the Command Palette.
-  const cmd = vscode.commands.registerCommand('biTeamALInstructions.download', async () => {
+  const cmd = vscode.commands.registerCommand('biTeamALTools.download', async () => {
     const root = findAlWorkspaceRoot();
     if (!root) {
       vscode.window.showWarningMessage('BIT Instructions Sync: No AL workspace detected.');
@@ -38,18 +39,32 @@ export function activate(context: vscode.ExtensionContext): void {
   });
   context.subscriptions.push(cmd);
 
+  const cmdUpdate = vscode.commands.registerCommand('biTeamALTools.updateBcVersion', async () => {
+    const root = findAlWorkspaceRoot();
+    if (!root) {
+      vscode.window.showWarningMessage('BIT Update BC Version: Kein AL-Workspace gefunden.');
+      return;
+    }
+    await updateBcVersion(root);
+  });
+  context.subscriptions.push(cmdUpdate);
+
   // Auto-trigger when the extension activates (workspace already open).
-  const root = findAlWorkspaceRoot();
-  if (root) {
-    downloadInstructionFiles(root);
+  if (vscode.workspace.getConfiguration('biTeamALTools').get<boolean>('autoDownloadOnOpen', false)) {
+    const root = findAlWorkspaceRoot();
+    if (root) {
+      downloadInstructionFiles(root);
+    }
   }
 
   // Auto-trigger when workspace folders are added later.
   context.subscriptions.push(
     vscode.workspace.onDidChangeWorkspaceFolders(() => {
-      const newRoot = findAlWorkspaceRoot();
-      if (newRoot) {
-        downloadInstructionFiles(newRoot);
+      if (vscode.workspace.getConfiguration('biTeamALTools').get<boolean>('autoDownloadOnOpen', false)) {
+        const newRoot = findAlWorkspaceRoot();
+        if (newRoot) {
+          downloadInstructionFiles(newRoot);
+        }
       }
     })
   );

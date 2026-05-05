@@ -1,6 +1,6 @@
-# BiTeam AL Instructions Sync
+# BiTeam AL Tools
 
-A VS Code extension that keeps AI instruction files in sync across all your AL (Business Central) workspaces by downloading them from a central Azure DevOps repository.
+A VS Code extension with tools for Business Central AL development: keeps AI instruction files in sync across workspaces and automates BC version updates.
 
 ## How it works
 
@@ -19,7 +19,8 @@ You can also trigger the download manually at any time via the Command Palette.
 ## Features
 
 - **Auto-sync on open** — downloads instruction files whenever an AL workspace is opened
-- **Manual command** — run `BIT: Download Instruction Files` from the Command Palette (`Ctrl+Shift+P`)
+- **`BIT: Download Instruction Files`** — manually trigger the download via the Command Palette (`Ctrl+Shift+P`)
+- **`BIT: Update BC Version`** — updates `.devops/cosmo.json`, `azure-pipeline.yml`, `app/app.json`, `test/app.json`, and `README.md` to a new BC major version in one step; creates a `Feature/BC{Version}Update` branch automatically
 - **Microsoft account auth** — uses the account you are already signed in with in VS Code, no PAT required
 - **Configurable** — control which Azure DevOps repo and which folders to download
 
@@ -33,17 +34,17 @@ You can also trigger the download manually at any time via the Command Palette.
 Add the following to your VS Code `settings.json` (user or workspace level):
 
 ```json
-"biTeamALInstructions.orgUrl": "https://dev.azure.com/your-org",
-"biTeamALInstructions.project": "YourProject",
-"biTeamALInstructions.repository": "YourRepository"
+"biTeamALTools.orgUrl": "https://dev.azure.com/your-org",
+"biTeamALTools.project":  "YourProject",
+"biTeamALTools.repository": "YourRepository"
 ```
 
 | Setting | Description | Default |
 |--------|-------------|---------|
-| `biTeamALInstructions.orgUrl` | Azure DevOps organization URL | _(required)_ |
-| `biTeamALInstructions.project` | Azure DevOps project name | _(required)_ |
-| `biTeamALInstructions.repository` | Azure DevOps repository name | _(required)_ |
-| `biTeamALInstructions.folders` | Folders to download from the repo root | `[".claude", ".github"]` |
+| `biTeamALTools.orgUrl` | Azure DevOps organization URL | _(required)_ |
+| `biTeamALTools.project` | Azure DevOps project name | _(required)_ |
+| `biTeamALTools.repository` | Azure DevOps repository name | _(required)_ |
+| `biTeamALTools.folders` | Folders to download from the repo root | `[".claude", ".github"]` |
 
 ## Development
 

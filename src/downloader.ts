@@ -43,7 +43,7 @@ export async function downloadInstructionFiles(workspaceRoot: string): Promise<v
 
   if (!orgUrl || !project || !repository) {
     vscode.window.showErrorMessage(
-      'AL Instructions Sync: Configure biTeamALInstructions.orgUrl, .project and .repository in settings.'
+      'AL Instructions Sync: Configure biTeamALTools.orgUrl, .project and .repository in settings.'
     );
     return;
   }

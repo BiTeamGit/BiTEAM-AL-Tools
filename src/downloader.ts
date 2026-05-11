@@ -35,7 +35,7 @@ async function apiFetch(url: string, token: string, binary = false): Promise<str
 }
 
 export async function downloadInstructionFiles(workspaceRoot: string): Promise<void> {
-  const config = vscode.workspace.getConfiguration('biTeamALInstructions');
+  const config = vscode.workspace.getConfiguration('biTeamALTools');
   const orgUrl = config.get<string>('orgUrl', '').replace(/\/$/, '');
   const project = config.get<string>('project', '');
   const repository = config.get<string>('repository', '');
@@ -43,7 +43,7 @@ export async function downloadInstructionFiles(workspaceRoot: string): Promise<v
 
   if (!orgUrl || !project || !repository) {
     vscode.window.showErrorMessage(
-      'AL Instructions Sync: Configure biTeamALTools.orgUrl, .project and .repository in settings.'
+      vscode.l10n.t('BIT: Configure biTeamALTools.orgUrl, .project and .repository in settings.')
     );
     return;
   }
@@ -52,7 +52,7 @@ export async function downloadInstructionFiles(workspaceRoot: string): Promise<v
   try {
     token = await getToken();
   } catch (err) {
-    vscode.window.showErrorMessage(`AL Instructions Sync: Authentication failed — ${err}`);
+    vscode.window.showErrorMessage(vscode.l10n.t('BIT: Authentication failed — {0}', String(err)));
     return;
   }
 
@@ -62,7 +62,7 @@ export async function downloadInstructionFiles(workspaceRoot: string): Promise<v
   await vscode.window.withProgress(
     {
       location: vscode.ProgressLocation.Notification,
-      title: 'AL Instructions Sync: downloading…',
+      title: vscode.l10n.t('BIT: Downloading instruction files…'),
       cancellable: false
     },
     async () => {
@@ -77,7 +77,7 @@ export async function downloadInstructionFiles(workspaceRoot: string): Promise<v
           const body: GitItemsResponse = JSON.parse(json);
           items = body.value;
         } catch (err) {
-          vscode.window.showWarningMessage(`AL Instructions Sync: Cannot list "${folder}" — ${err}`);
+          vscode.window.showWarningMessage(vscode.l10n.t('BIT: Cannot list "{0}" — {1}', folder, String(err)));
           continue;
         }
 
@@ -97,12 +97,12 @@ export async function downloadInstructionFiles(workspaceRoot: string): Promise<v
             const buf = await apiFetch(downloadUrl, token, true) as ArrayBuffer;
             fs.writeFileSync(target, Buffer.from(buf));
           } catch (err) {
-            vscode.window.showWarningMessage(`AL Instructions Sync: Cannot download "${item.path}" — ${err}`);
+            vscode.window.showWarningMessage(vscode.l10n.t('BIT: Cannot download "{0}" — {1}', item.path, String(err)));
           }
         }
       }
     }
   );
 
-  vscode.window.showInformationMessage('AL Instructions Sync: instruction files updated.');
+  vscode.window.showInformationMessage(vscode.l10n.t('BIT: Instruction files updated.'));
 }

@@ -1,24 +1,34 @@
 {
   "name": "bi-team-al-tools",
   "displayName": "BiTeam AL Tools",
-  "description": "Tools for Business Central AL development: sync AI instruction files and update BC versions across workspaces",
-  "version": "0.1.0",
+  "description": "%extension.description%",
+  "version": "0.1.4",
   "publisher": "biteam",
   "engines": {
     "vscode": "^1.85.0"
   },
-  "categories": ["Programming Languages", "Other"],
-  "keywords": ["AL", "Business Central", "Dynamics 365 BC", "Azure DevOps", "instructions"],
+  "l10n": "./l10n",
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "keywords": [
+    "AL",
+    "Business Central",
+    "Dynamics 365 BC",
+    "Azure DevOps",
+    "instructions"
+  ],
   "icon": "images/icon.png",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/matthiasrabus/biTeamALInstructions"
+    "url": "https://github.com/BiTeamGit/BiTEAM-AL-Tools"
   },
   "bugs": {
-    "url": "https://github.com/matthiasrabus/biTeamALInstructions/issues"
+    "url": "https://github.com/BiTeamGit/BiTEAM-AL-Tools/issues"
   },
-  "homepage": "https://github.com/matthiasrabus/biTeamALInstructions#readme",
+  "homepage": "https://github.com/BiTeamGit/BiTEAM-AL-Tools#readme",
   "activationEvents": [
     "workspaceContains:**/app.json"
   ],
@@ -27,41 +37,50 @@
     "commands": [
       {
         "command": "biTeamALTools.download",
-        "title": "BIT: Download Instruction Files"
+        "title": "%command.download.title%"
       },
       {
         "command": "biTeamALTools.updateBcVersion",
-        "title": "BIT: Update BC Version"
+        "title": "%command.updateBcVersion.title%"
+      },
+      {
+        "command": "biTeamALTools.updateProjectSettings",
+        "title": "%command.updateProjectSettings.title%"
       }
     ],
     "configuration": {
-      "title": "BiTeam AL Tools",
+      "title": "%config.title%",
       "properties": {
         "biTeamALTools.orgUrl": {
           "type": "string",
           "default": "",
-          "description": "Azure DevOps organization URL (e.g. https://dev.azure.com/myorg)"
+          "description": "%config.orgUrl.description%"
         },
         "biTeamALTools.project": {
           "type": "string",
           "default": "",
-          "description": "Azure DevOps project name"
+          "description": "%config.project.description%"
         },
         "biTeamALTools.repository": {
           "type": "string",
           "default": "",
-          "description": "Azure DevOps repository name"
+          "description": "%config.repository.description%"
         },
         "biTeamALTools.folders": {
           "type": "array",
-          "items": { "type": "string" },
-          "default": [".claude", ".github"],
-          "description": "Folders to download from the repository root"
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            ".claude",
+            ".github"
+          ],
+          "description": "%config.folders.description%"
         },
         "biTeamALTools.autoDownloadOnOpen": {
           "type": "boolean",
           "default": false,
-          "description": "Automatically download instruction files when an AL workspace is opened (BIT: Download Instruction Files). If disabled, trigger the download manually via the Command Palette."
+          "description": "%config.autoDownloadOnOpen.description%"
         }
       }
     }

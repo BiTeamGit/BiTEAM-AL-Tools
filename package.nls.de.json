@@ -1,0 +1,12 @@
+{
+  "extension.description": "Tools für Business Central AL-Entwicklung: KI-Instruktionsdateien synchronisieren und BC-Versionen in Workspaces aktualisieren",
+  "command.download.title": "BIT: Instruktionsdateien herunterladen",
+  "command.updateBcVersion.title": "BIT: BC-Version aktualisieren",
+  "config.title": "BiTeam AL Tools",
+  "config.orgUrl.description": "Azure DevOps-Organisations-URL (z.B. https://dev.azure.com/meine-org)",
+  "config.project.description": "Azure DevOps-Projektname",
+  "config.repository.description": "Azure DevOps-Repositoryname",
+  "config.folders.description": "Ordner, die vom Repository-Root heruntergeladen werden sollen",
+  "config.autoDownloadOnOpen.description": "Instruktionsdateien automatisch herunterladen, wenn ein AL-Workspace geöffnet wird. Wenn deaktiviert, den Download manuell über die Befehlspalette auslösen.",
+  "command.updateProjectSettings.title": "BIT: Projekteinstellungen aktualisieren"
+}

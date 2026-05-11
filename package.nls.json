@@ -1,0 +1,12 @@
+{
+  "extension.description": "Tools for Business Central AL development: sync AI instruction files and update BC versions across workspaces",
+  "command.download.title": "BIT: Download Instruction Files",
+  "command.updateBcVersion.title": "BIT: Update BC Version",
+  "config.title": "BiTeam AL Tools",
+  "config.orgUrl.description": "Azure DevOps organization URL (e.g. https://dev.azure.com/myorg)",
+  "config.project.description": "Azure DevOps project name",
+  "config.repository.description": "Azure DevOps repository name",
+  "config.folders.description": "Folders to download from the repository root",
+  "config.autoDownloadOnOpen.description": "Automatically download instruction files when an AL workspace is opened (BIT: Download Instruction Files). If disabled, trigger the download manually via the Command Palette.",
+  "command.updateProjectSettings.title": "BIT: Update Project Settings"
+}

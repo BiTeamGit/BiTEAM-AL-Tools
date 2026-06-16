@@ -13,15 +13,13 @@ function findAlWorkspaceRoot(): string | undefined {
 
   for (const folder of folders) {
     const root = folder.uri.fsPath;
-    // An AL workspace has app.json nested inside app/ and/or test/ subfolders.
-    // We also accept a flat layout where app.json sits directly at the root.
-    const candidates = [
-      path.join(root, 'app', 'app.json'),
-      path.join(root, 'test', 'app.json'),
-      path.join(root, 'app.json')
-    ];
-    if (candidates.some(p => fs.existsSync(p))) {
-      return root;
+    if (fs.existsSync(path.join(root, 'app', 'app.json'))) { return root; }
+    if (fs.existsSync(path.join(root, 'test', 'app.json'))) { return root; }
+    if (fs.existsSync(path.join(root, 'app.json'))) {
+      // In a multi-root workspace the workspace folder itself is the app/ or test/ subfolder.
+      // Go up one level to reach the true project root.
+      const name = path.basename(root).toLowerCase();
+      return (name === 'app' || name === 'test') ? path.dirname(root) : root;
     }
   }
 

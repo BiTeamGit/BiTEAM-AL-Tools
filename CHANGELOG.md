@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.6] — 2026-06-16
+
+### Fixed
+- Download instruction files now correctly resolves the project root in multi-root workspaces where `app` and `test` are separate workspace folders. Files are placed alongside `app` and `test` instead of inside them.
+
+### Added
+- Downloaded folders (`.claude`, `.github`) are automatically added to the VS Code workspace after download so they appear in the Explorer sidebar. Folders are only added if at least one file was successfully written.
+
 ## [0.1.0] — 2026-05-05
 
 ### Added

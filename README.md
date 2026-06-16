@@ -8,14 +8,16 @@ A VS Code extension with tools for Business Central AL development: keeps AI ins
 
 Downloads configured folders (default: `.claude`, `.github`) from a central Azure DevOps repository into the open AL workspace. Authenticates via the Microsoft account already signed in to VS Code — no Personal Access Token required.
 
+Files are always placed at the project root — alongside `app/` and `test/` — regardless of whether the workspace is opened as a single-root or multi-root workspace. Downloaded folders are automatically added to the VS Code workspace so they appear in the Explorer sidebar.
+
 Can also be triggered automatically when an AL workspace is opened (see `biTeamALTools.autoDownloadOnOpen`).
 
 ```
 MyApp/
 ├── app/
 ├── test/
-├── .claude/       ← downloaded from Azure DevOps
-└── .github/       ← downloaded from Azure DevOps
+├── .claude/       ← downloaded from Azure DevOps, added to workspace
+└── .github/       ← downloaded from Azure DevOps, added to workspace
 ```
 
 ### `BIT: Update BC Version`

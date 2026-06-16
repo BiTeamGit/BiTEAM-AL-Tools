@@ -81,6 +81,7 @@ export async function downloadInstructionFiles(workspaceRoot: string): Promise<v
           continue;
         }
 
+        let filesWritten = 0;
         for (const item of items) {
           if (item.gitObjectType !== 'blob') {
             continue;
@@ -96,8 +97,20 @@ export async function downloadInstructionFiles(workspaceRoot: string): Promise<v
           try {
             const buf = await apiFetch(downloadUrl, token, true) as ArrayBuffer;
             fs.writeFileSync(target, Buffer.from(buf));
+            filesWritten++;
           } catch (err) {
             vscode.window.showWarningMessage(vscode.l10n.t('BIT: Cannot download "{0}" — {1}', item.path, String(err)));
+          }
+        }
+
+        if (filesWritten > 0) {
+          const folderFsPath = path.join(workspaceRoot, folder.startsWith('/') ? folder.slice(1) : folder);
+          const folderUri = vscode.Uri.file(folderFsPath);
+          const alreadyPresent = (vscode.workspace.workspaceFolders ?? [])
+            .some(wf => wf.uri.fsPath === folderUri.fsPath);
+          if (!alreadyPresent) {
+            vscode.workspace.updateWorkspaceFolders(
+              vscode.workspace.workspaceFolders?.length ?? 0, 0, { uri: folderUri });
           }
         }
       }

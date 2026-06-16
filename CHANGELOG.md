@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.1.5] — 2026-06-16
+## [0.1.6] — 2026-06-16
 
 ### Fixed
 - Download instruction files now correctly resolves the project root in multi-root workspaces where `app` and `test` are separate workspace folders. Files are placed alongside `app` and `test` instead of inside them.

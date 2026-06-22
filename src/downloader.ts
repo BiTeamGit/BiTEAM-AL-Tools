@@ -89,7 +89,7 @@ export async function downloadInstructionFiles(workspaceRoot: string): Promise<v
 
           // item.path looks like /.claude/settings.json — strip the leading /
           const relative = item.path.startsWith('/') ? item.path.slice(1) : item.path;
-          const target = path.join(workspaceRoot, relative);
+          const target = path.join(workspaceRoot, 'app', relative);
           fs.mkdirSync(path.dirname(target), { recursive: true });
 
           const downloadUrl =
@@ -104,7 +104,7 @@ export async function downloadInstructionFiles(workspaceRoot: string): Promise<v
         }
 
         if (filesWritten > 0) {
-          const folderFsPath = path.join(workspaceRoot, folder.startsWith('/') ? folder.slice(1) : folder);
+          const folderFsPath = path.join(workspaceRoot, 'app', folder.startsWith('/') ? folder.slice(1) : folder);
           const folderUri = vscode.Uri.file(folderFsPath);
           const alreadyPresent = (vscode.workspace.workspaceFolders ?? [])
             .some(wf => wf.uri.fsPath === folderUri.fsPath);

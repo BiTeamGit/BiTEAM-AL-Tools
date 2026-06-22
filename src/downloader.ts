@@ -81,12 +81,15 @@ export async function downloadInstructionFiles(workspaceRoot: string): Promise<v
           continue;
         }
 
-        let filesWritten = 0;
-        for (const item of items) {
-          if (item.gitObjectType !== 'blob') {
-            continue;
-          }
+        const blobs = items.filter(
+          item => item.gitObjectType === 'blob' && !item.path.endsWith('.gitkeep')
+        );
+        if (blobs.length === 0) {
+          continue;
+        }
 
+        let filesWritten = 0;
+        for (const item of blobs) {
           // item.path looks like /.claude/settings.json — strip the leading /
           const relative = item.path.startsWith('/') ? item.path.slice(1) : item.path;
           const target = path.join(workspaceRoot, 'app', relative);

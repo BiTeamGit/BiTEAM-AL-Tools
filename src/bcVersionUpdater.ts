@@ -5,6 +5,21 @@ import { execSync } from 'child_process';
 
 const EASY_ADDONS_PATTERN = /^easyAddons(_BC\d+)?$/i;
 
+export function calculateRuntime(bcVersion: number): string {
+  return `${bcVersion - 11}.0`;
+}
+
+export function replaceVersionMajorInYaml(content: string, newMajor: number): string {
+  return content.replace(
+    /(-\s+name:\s*["']?Version\.Major["']?\s*\r?\n\s*value:\s*["']?)\d+(["']?)/,
+    `$1${newMajor}$2`
+  );
+}
+
+export function replaceReadmeVersion(content: string, newMajor: number): string {
+  return content.replace(/^# D365BC-\d+ Project/m, `# D365BC-${newMajor} Project`);
+}
+
 export async function updateBcVersion(workspaceRoot: string): Promise<void> {
   // Step 1: BC version
   const input = await vscode.window.showInputBox({
@@ -110,10 +125,7 @@ export async function updateBcVersion(workspaceRoot: string): Promise<void> {
   if (fs.existsSync(pipelinePath)) {
     let content = fs.readFileSync(pipelinePath, 'utf8');
     const before = content;
-    content = content.replace(
-      /(-\s+name:\s*["']?Version\.Major["']?\s*\r?\n\s*value:\s*["']?)\d+(["']?)/,
-      `$1${versionStr}$2`
-    );
+    content = replaceVersionMajorInYaml(content, bcVersion);
     if (content !== before) {
       fs.writeFileSync(pipelinePath, content, 'utf8');
       updated.push('.devops/azure-pipeline.yml');
@@ -128,7 +140,7 @@ export async function updateBcVersion(workspaceRoot: string): Promise<void> {
 
   // app/app.json und test/app.json
   const appVersion = `${bcVersion}.0.0.0`;
-  const runtime = `${bcVersion - 11}.0`;
+  const runtime = calculateRuntime(bcVersion);
   for (const subfolder of ['app', 'test']) {
     const jsonPath = path.join(repoRoot, subfolder, 'app.json');
     if (fs.existsSync(jsonPath)) {
@@ -157,7 +169,7 @@ export async function updateBcVersion(workspaceRoot: string): Promise<void> {
   if (readmePath) {
     let content = fs.readFileSync(readmePath, 'utf8');
     const before = content;
-    content = content.replace(/^# D365BC-\d+ Project/m, `# D365BC-${versionStr} Project`);
+    content = replaceReadmeVersion(content, bcVersion);
     if (content !== before) {
       fs.writeFileSync(readmePath, content, 'utf8');
       updated.push(path.basename(readmePath));

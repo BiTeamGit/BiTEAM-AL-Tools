@@ -81,15 +81,18 @@ export async function downloadInstructionFiles(workspaceRoot: string): Promise<v
           continue;
         }
 
-        let filesWritten = 0;
-        for (const item of items) {
-          if (item.gitObjectType !== 'blob') {
-            continue;
-          }
+        const blobs = items.filter(
+          item => item.gitObjectType === 'blob' && !item.path.endsWith('.gitkeep')
+        );
+        if (blobs.length === 0) {
+          continue;
+        }
 
+        let filesWritten = 0;
+        for (const item of blobs) {
           // item.path looks like /.claude/settings.json — strip the leading /
           const relative = item.path.startsWith('/') ? item.path.slice(1) : item.path;
-          const target = path.join(workspaceRoot, relative);
+          const target = path.join(workspaceRoot, 'app', relative);
           fs.mkdirSync(path.dirname(target), { recursive: true });
 
           const downloadUrl =
@@ -104,7 +107,7 @@ export async function downloadInstructionFiles(workspaceRoot: string): Promise<v
         }
 
         if (filesWritten > 0) {
-          const folderFsPath = path.join(workspaceRoot, folder.startsWith('/') ? folder.slice(1) : folder);
+          const folderFsPath = path.join(workspaceRoot, 'app', folder.startsWith('/') ? folder.slice(1) : folder);
           const folderUri = vscode.Uri.file(folderFsPath);
           const alreadyPresent = (vscode.workspace.workspaceFolders ?? [])
             .some(wf => wf.uri.fsPath === folderUri.fsPath);

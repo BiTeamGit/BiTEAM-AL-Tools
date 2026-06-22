@@ -9,6 +9,27 @@ const RULESET_FILENAME  = 'BiTEAMRuleset.json';
 const RULESET_REL_PATH  = '../BiTEAMRuleset.json';
 const REQUIRED_CODECOPS = ['CodeCop', 'UICop', 'PerTenantExtensionCop'];
 
+export function swapExtension(recs: string[]): boolean {
+  const devopsIdx = recs.indexOf(COSMO_DEVOPS_EXT);
+  const alpacaIdx = recs.indexOf(COSMO_ALPACA_EXT);
+  if (devopsIdx !== -1) {
+    if (alpacaIdx === -1) {
+      recs[devopsIdx] = COSMO_ALPACA_EXT;
+    } else {
+      recs.splice(devopsIdx, 1);
+    }
+    return true;
+  }
+  return false;
+}
+
+export function ensureCodeCops(current: unknown): string[] | false {
+  if (Array.isArray(current) && REQUIRED_CODECOPS.every(c => (current as string[]).includes(c))) {
+    return false;
+  }
+  return [...REQUIRED_CODECOPS];
+}
+
 const DEFAULT_RULESET = {
   name: 'Project ruleset',
   description: 'Spezielle Anpassungen für Projekt',
@@ -52,15 +73,7 @@ export async function updateProjectSettings(workspaceRoot: string): Promise<void
     if (!Array.isArray(wsObj.extensions.recommendations)) { wsObj.extensions.recommendations = []; }
 
     const recs: string[] = wsObj.extensions.recommendations;
-    const devopsIdx = recs.indexOf(COSMO_DEVOPS_EXT);
-    const alpacaIdx = recs.indexOf(COSMO_ALPACA_EXT);
-
-    if (devopsIdx !== -1) {
-      if (alpacaIdx === -1) {
-        recs[devopsIdx] = COSMO_ALPACA_EXT;   // replace
-      } else {
-        recs.splice(devopsIdx, 1);             // alpaca already there, just remove devops
-      }
+    if (swapExtension(recs)) {
       wsChanged = true;
     }
 
@@ -103,11 +116,9 @@ export async function updateProjectSettings(workspaceRoot: string): Promise<void
       cosmoChanged = true;
     }
 
-    const hasAllCops =
-      Array.isArray(cosmoObj.codeCops) &&
-      REQUIRED_CODECOPS.every(c => cosmoObj.codeCops.includes(c));
-    if (!hasAllCops) {
-      cosmoObj.codeCops = REQUIRED_CODECOPS;
+    const newCops = ensureCodeCops(cosmoObj.codeCops);
+    if (newCops !== false) {
+      cosmoObj.codeCops = newCops;
       cosmoChanged = true;
     }
 

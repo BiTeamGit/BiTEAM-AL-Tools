@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.8] — 2026-06-26
+
+### Fixed
+- Download instruction files no longer adds downloaded folders as extra VS Code workspace entries — files are written to disk only, eliminating duplicate folder entries in the Explorer sidebar.
+
+### Changed
+- BC version update: when updating to BC 28+, the `Tests-TestLibraries` dependency in `test/app.json` is automatically replaced by `Application Test Library` (new Microsoft package ID).
+
 ## [0.1.6] — 2026-06-16
 
 ### Fixed

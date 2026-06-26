@@ -149,8 +149,22 @@ export async function updateBcVersion(workspaceRoot: string): Promise<void> {
       obj.platform = appVersion;
       obj.runtime = runtime;
       if (Array.isArray(obj.dependencies)) {
-        for (const dep of obj.dependencies) {
-          if (dep.publisher === 'Microsoft' || dep.publisher === 'B.i.Team') {
+        for (let i = 0; i < obj.dependencies.length; i++) {
+          const dep = obj.dependencies[i];
+          // BC28+: replace Tests-TestLibraries with Application Test Library in test/app.json
+          if (
+            subfolder === 'test' &&
+            bcVersion >= 28 &&
+            dep.id === '5d86850b-0d76-4eca-bd7b-951ad998e997' &&
+            dep.name === 'Tests-TestLibraries'
+          ) {
+            obj.dependencies[i] = {
+              id: 'd852d5d2-a39d-4179-baeb-f99a19e32510',
+              name: 'Application Test Library',
+              publisher: 'Microsoft',
+              version: appVersion
+            };
+          } else if (dep.publisher === 'Microsoft' || dep.publisher === 'B.i.Team') {
             dep.version = appVersion;
           }
         }

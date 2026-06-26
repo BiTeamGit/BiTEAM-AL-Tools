@@ -106,16 +106,6 @@ export async function downloadInstructionFiles(workspaceRoot: string): Promise<v
           }
         }
 
-        if (filesWritten > 0) {
-          const folderFsPath = path.join(workspaceRoot, 'app', folder.startsWith('/') ? folder.slice(1) : folder);
-          const folderUri = vscode.Uri.file(folderFsPath);
-          const alreadyPresent = (vscode.workspace.workspaceFolders ?? [])
-            .some(wf => wf.uri.fsPath === folderUri.fsPath);
-          if (!alreadyPresent) {
-            vscode.workspace.updateWorkspaceFolders(
-              vscode.workspace.workspaceFolders?.length ?? 0, 0, { uri: folderUri });
-          }
-        }
       }
     }
   );

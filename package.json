@@ -2,7 +2,7 @@
   "name": "bi-team-al-tools",
   "displayName": "BiTeam AL Tools",
   "description": "%extension.description%",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "publisher": "biteam",
   "engines": {
     "vscode": "^1.85.0"

@@ -9,11 +9,19 @@ export function calculateRuntime(bcVersion: number): string {
   return `${bcVersion - 11}.0`;
 }
 
-export function replaceVersionMajorInYaml(content: string, newMajor: number): string {
-  return content.replace(
-    /(-\s+name:\s*["']?Version\.Major["']?\s*\r?\n\s*value:\s*["']?)\d+(["']?)/,
-    `$1${newMajor}$2`
+function replaceYamlVariableValue(content: string, name: string, value: number): string {
+  const re = new RegExp(
+    `(-\\s+name:\\s*["']?${name.replace('.', '\\.')}["']?\\s*\\r?\\n\\s*value:\\s*["']?)\\d+(["']?)`
   );
+  return content.replace(re, `$1${value}$2`);
+}
+
+export function replaceVersionMajorInYaml(content: string, newMajor: number): string {
+  let result = replaceYamlVariableValue(content, 'Version.Major', newMajor);
+  // Minor/Revision beim Major-Bump immer auf 0 zurücksetzen
+  result = replaceYamlVariableValue(result, 'Version.Minor', 0);
+  result = replaceYamlVariableValue(result, 'Version.Revision', 0);
+  return result;
 }
 
 export function replaceReadmeVersion(content: string, newMajor: number): string {

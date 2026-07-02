@@ -26,6 +26,26 @@ describe('replaceVersionMajorInYaml', () => {
     const yaml = 'unrelated: content';
     expect(replaceVersionMajorInYaml(yaml, 28)).toBe('unrelated: content');
   });
+  it('resets Version.Minor and Version.Revision to 0', () => {
+    const yaml =
+      '- name: Version.Major\n  value: 27\n' +
+      '- name: Version.Minor\n  value: 5\n' +
+      '- name: Version.Revision\n  value: 42';
+    const out = replaceVersionMajorInYaml(yaml, 28);
+    expect(out).toContain('name: Version.Major\n  value: 28');
+    expect(out).toContain('name: Version.Minor\n  value: 0');
+    expect(out).toContain('name: Version.Revision\n  value: 0');
+  });
+  it('resets quoted Minor/Revision to 0', () => {
+    const yaml =
+      "- name: 'Version.Major'\n  value: '27'\n" +
+      "- name: 'Version.Minor'\n  value: '5'\n" +
+      "- name: 'Version.Revision'\n  value: '42'";
+    const out = replaceVersionMajorInYaml(yaml, 28);
+    expect(out).toContain("value: '0'");
+    expect(out).not.toContain("value: '5'");
+    expect(out).not.toContain("value: '42'");
+  });
 });
 
 describe('replaceReadmeVersion', () => {

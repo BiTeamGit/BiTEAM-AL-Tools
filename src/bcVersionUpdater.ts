@@ -16,6 +16,13 @@ export function replaceVersionMajorInYaml(content: string, newMajor: number): st
   );
 }
 
+export function replaceVersionMinorInYaml(content: string): string {
+  return content.replace(
+    /(-\s+name:\s*["']?Version\.Minor["']?\s*\r?\n\s*value:\s*["']?)\d+(["']?)/,
+    `$10$2`
+  );
+}
+
 export function replaceReadmeVersion(content: string, newMajor: number): string {
   return content.replace(/^# D365BC-\d+ Project/m, `# D365BC-${newMajor} Project`);
 }
@@ -126,6 +133,7 @@ export async function updateBcVersion(workspaceRoot: string): Promise<void> {
     let content = fs.readFileSync(pipelinePath, 'utf8');
     const before = content;
     content = replaceVersionMajorInYaml(content, bcVersion);
+    content = replaceVersionMinorInYaml(content);
     if (content !== before) {
       fs.writeFileSync(pipelinePath, content, 'utf8');
       updated.push('.devops/azure-pipeline.yml');

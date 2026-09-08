@@ -1,24 +1,35 @@
 # Changelog
 
+## [0.1.9] — 2026-09-08
+
+### Changed
+
+- BC version update: `Version.Minor` in `azure-pipeline.yml` is now reset to `0` whenever it differs, alongside the `Version.Major` update.
+
 ## [0.1.8] — 2026-06-26
 
 ### Fixed
+
 - Download instruction files no longer adds downloaded folders as extra VS Code workspace entries — files are written to disk only, eliminating duplicate folder entries in the Explorer sidebar.
 
 ### Changed
+
 - BC version update: when updating to BC 28+, the `Tests-TestLibraries` dependency in `test/app.json` is automatically replaced by `Application Test Library` (new Microsoft package ID).
 
 ## [0.1.6] — 2026-06-16
 
 ### Fixed
+
 - Download instruction files now correctly resolves the project root in multi-root workspaces where `app` and `test` are separate workspace folders. Files are placed alongside `app` and `test` instead of inside them.
 
 ### Added
+
 - Downloaded folders (`.claude`, `.github`) are automatically added to the VS Code workspace after download so they appear in the Explorer sidebar. Folders are only added if at least one file was successfully written.
 
 ## [0.1.0] — 2026-05-05
 
 ### Added
+
 - `BIT: Download Instruction Files` — downloads configured folders (`.claude`, `.github`) from a central Azure DevOps repository into the open AL workspace. Triggers automatically on workspace open and is available via the Command Palette.
 - `BIT: Update BC Version` — updates all version-related files in an AL repository to a new Business Central major version: `.devops/cosmo.json`, `azure-pipeline.yml`, `app/app.json`, `test/app.json`, `README.md`. Creates a `Feature/BC{Version}Update` git branch automatically.
 - Microsoft account authentication — no Personal Access Token required.
